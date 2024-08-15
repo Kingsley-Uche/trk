@@ -39,8 +39,5 @@ Route::post('view/all/tracker',[TrackerController::class,'ViewAll']);
 Route::post('delete/tracker',[TrackerController::class,'DeleteTracker']);
 Route::post('get/location', [LiveTrackController::class, 'getLocation']);
 
-Route::post('admin/create/driver', [DriversController::class, 'createDriver']);
-Route::post('admin/update/driver', [DriversController::class, 'editDrive']);
-Route::post('admin/delete/driver', [DriversController::class, 'deleteDriver']);
 
 });

@@ -10,18 +10,18 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('drivers', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->string('email');
-        $table->string('phone'); // or $table->bigInteger('phone');
-        $table->string('vehicle_vin');
-        $table->foreignId('vehicle_owner_id')->constrained('vehicle_owners')->onDelete('cascade');
-        $table->timestamps();
-    });
-}
-
+    {
+        Schema::create('drivers', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('vehicle_vin');
+            $table->unsignedBigInteger('vehicle_id');
+            $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.

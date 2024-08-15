@@ -24,12 +24,12 @@ class Vehicle extends Model
         return $this->belongsTo(VehicleOwner::class, 'vehicle_owner_id');
     }
     
+   // In App\Models\Vehicle.php
 
 public function lastLocation()
 {
     return $this->hasOne(LiveLocation::class, 'vehicle_id')->latestOfMany();
 }
-
 
     
 }
