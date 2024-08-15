@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\PermissionController;
 use App\Http\Controllers\Api\V1\LiveTrackController;
 use App\Http\Controllers\Api\V1\VehicleController;
 use App\Http\Controllers\Api\V1\TrackerController;
+use App\Http\Controllers\Api\V1\DriversController;
 
 
 Route::get('/user', function (Request $request) {
@@ -38,6 +39,12 @@ Route::post('create/tracker',[TrackerController::class,'saveTracker']);
 Route::post('view/all/tracker',[TrackerController::class,'ViewAll']);
 Route::post('delete/tracker',[TrackerController::class,'DeleteTracker']);
 Route::post('get/location', [LiveTrackController::class, 'getLocation']);
+
+Route::post('admin/create/driver', [DriversController::class, 'createDriver']);
+Route::post('admin/update/driver', [DriversController::class, 'editDriver']);
+Route::post('admin/delete/driver', [DriversController::class, 'deleteDriver']);
+Route::get('admin/driver/all', [DriversController::class, 'getDrivers']);
+
 
 
 });

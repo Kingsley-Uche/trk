@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Driver;
+use App\Models\Drivers as Driver;
 use App\Models\Vehicle;
 
 class DriversController extends Controller
@@ -52,7 +52,7 @@ class DriversController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['sometimes', 'string'],
             'email' => ['sometimes', 'email'],
-            'phone' => ['sometimes', 'string'],
+            'phone' => ['sometimes', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
             'vehicle_vin' => ['required', 'string', 'exists:vehicles,vin'],
             'vehicle_id' => ['required', 'numeric', 'exists:vehicles,id'],
             'driver_id' => ['required', 'numeric', 'exists:drivers,id'],

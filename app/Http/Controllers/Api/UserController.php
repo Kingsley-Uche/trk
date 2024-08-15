@@ -234,7 +234,7 @@ $this->createInitialPerm($user);
 return \DB::transaction(function () use ($user) {
     $permissions = ['create role','create user','create permission', 'assign permission',
     'create vehicle','edit vehicle','delete vehicle','create device','edit device',
-    'delete device','create subscription','delete subscription'];
+    'delete device','create subscription','delete subscription','create driver', 'update driver','delete driver'];
     $defaultGuard = 'sanctum';
     //Auth::getDefaultDriver();
 
