@@ -88,6 +88,7 @@ class LiveTrackController extends Controller
     $longitude = strip_tags($data['lon']);
      $vehicleWithOwner['tracker'] =$data;
      $vehicleWithOwner['within_geofence']=$this->checkInGeofence($vehicleWithOwner['id'], $latitude, $longitude);
+
         
          broadcast(new \App\Events\Location($vehicleWithOwner));
     $lastLocation = LiveLocation::where('vehicle_id', $vehicle['id'])->where('tracker_id', $tracker->id)->latest()->first();
@@ -262,6 +263,7 @@ $result['vehicle']['last_location']['latitude']=floatval($result['vehicle']['las
 $result['vehicle']['last_location']['longitude']=floatval($result['vehicle']['last_location']['longitude']);
 $result['vehicle']['last_location']['speed']=floatval($result['vehicle']['last_location']['speed']);
 $result['vehicle']['last_location']['within_geofence']=$this-> checkInGeofence($vehicle->id, $result['vehicle']['last_location']['latitude'], $result['vehicle']['last_location']['longitude']);
+$result['vehicle']['last_location']['driver']=Driver::where('vehicle_vin',$vehicle->vin)->first();
     return response()->json($result);
 }
 
