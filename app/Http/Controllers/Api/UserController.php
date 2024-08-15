@@ -47,7 +47,7 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials)) {
             $token = $user->createToken('api-token')->plainTextToken;
-            $user->update(['api_token'=>$token]);
+            $user->update(['api_token'=>$token,'last_activity'=>now()]);
             return response()->json(['message' => 'Login successful', 'user'=>$user, 'token' => $token], 200);
         } else {
             return response()->json(['error' => 'Invalid email or password', 'message' => 'Invalid email or password'], 401);

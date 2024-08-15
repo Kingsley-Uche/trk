@@ -24,14 +24,16 @@ class DriversController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'phone' => ['required', 'string'],
+            'vehicle_id' => ['required', 'numeric'],
             'vehicle_vin' => ['required', 'string', 'exists:vehicles,vin'],
         ]);
+    
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $data = Driver::create($this->sanitizeInput($request, ['name', 'email', 'phone', 'vehicle_vin']));
+        $data = Driver::create($this->sanitizeInput($request, ['name', 'email', 'phone', 'vehicle_vin','vehicle_id']));
 
         return response()->json([
             'message' => 'Driver created successfully',
@@ -44,33 +46,36 @@ class DriversController extends Controller
     public function editDriver(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
-
+    
         if (!$this->isAuthorized($user)) {
             return response()->json(['error' => 'Access not permitted for this user type'], 403);
         }
-
+    
         $validator = Validator::make($request->all(), [
             'name' => ['sometimes', 'string'],
             'email' => ['sometimes', 'email'],
             'phone' => ['sometimes', 'regex:/^([0-9\s\-\+\(\)]*)$/'],
-            'vehicle_vin' => ['required', 'string', 'exists:vehicles,vin'],
-            'vehicle_id' => ['required', 'numeric', 'exists:vehicles,id'],
+            'vehicle_vin' => ['sometimes', 'string', 'exists:vehicles,vin'],
+            'vehicle_id' => ['sometimes', 'numeric', 'exists:vehicles,id'],
             'driver_id' => ['required', 'numeric', 'exists:drivers,id'],
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
+    
         $driver = Driver::findOrFail($request->driver_id);
-        $driver->update($this->sanitizeInput($request, ['name', 'email', 'phone', 'vehicle_vin']));
-
+    
+        // Only update the attributes that were provided
+        $driver->update($request->only(['name', 'email', 'phone', 'vehicle_vin', 'vehicle_id']));
+    
         return response()->json([
             'message' => 'Driver updated successfully',
             'success' => true,
             'data' => $driver
         ], 200);
     }
+    
 
     // Delete a driver
     public function deleteDriver(Request $request)

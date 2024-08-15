@@ -4,7 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
-return Application::configure(basePath: dirname(__DIR__))
+$app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
@@ -13,12 +13,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        
-           $middleware->validateCsrfTokens(except: [
+        $middleware->validateCsrfTokens(except: [
             '/', // Replace with your actual route name
         ]);
-        //
+        $middleware->append(
+            \App\Http\Middleware\CheckTokenInactivity::class
+        );
+        // You can append other middleware here if needed
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+        // Handle exceptions here if needed
+    });
+
+// Create the application instance
+return $app->create();

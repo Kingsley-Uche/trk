@@ -29,6 +29,7 @@ class User extends Authenticatable
         'created_by_user_id',
         'status',
         'password',
+        'last_activity'
     ];
 
     /**
@@ -41,7 +42,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'api_token',
-        'created_by_user_id',
+        'created_by_user_id'
+        
     ];
 
     /**
