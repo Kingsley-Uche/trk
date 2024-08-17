@@ -205,6 +205,7 @@ private function checkInGeofence($vehicleId, $latitude, $longitude)
 
     // Extract polygon coordinates and zone name
     $polygonCoordinates = $this->extractPolygonCoordinates($geofence->area);
+    $circle = $this->convertPolygonToCircle($polygonCoordinates);
     $zone = $geofence->name;
 
     // Check if the location is within the geofence area
@@ -214,7 +215,8 @@ private function checkInGeofence($vehicleId, $latitude, $longitude)
     $geofenceData = [
         'coordinates' => $polygonCoordinates,
         'zone' => $zone,
-        'is_in_geofence' => $isInGeofence
+        'is_in_geofence' => $isInGeofence,
+        'circle_data'=>$circle,
     ];
 
     return $geofenceData; // Return the geofence data array
@@ -289,12 +291,62 @@ private function extractPolygonCoordinates($area)
 
     foreach ($points[0] as $point) {
         $coordinates[] = [
-            'lat' => $point[0],
-            'lng' => $point[1],
+            'lng' => $point[0],
+            'lat' => $point[1],
         ];
     }
 
     return $coordinates;
+}
+
+
+private function convertPolygonToCircle(array $coordinates): array
+{
+    $latSum = 0;
+    $lngSum = 0;
+    $maxDistance = 0;
+    $count = count($coordinates);
+
+    // Calculate centroid
+    foreach ($coordinates as $coord) {
+        $latSum += $coord['lat'];
+        $lngSum += $coord['lng'];
+    }
+
+    $centroid = [
+        'lat' => $latSum / $count,
+        'lng' => $lngSum / $count
+    ];
+
+    // Calculate maximum distance from centroid to any vertex
+    foreach ($coordinates as $coord) {
+        $distance = $this->calculateDistance($centroid, $coord);
+        if ($distance > $maxDistance) {
+            $maxDistance = $distance;
+        }
+    }
+
+    return [
+        'center' => $centroid,
+        'radius' => $maxDistance
+    ];
+}
+
+private function calculateDistance(array $point1, array $point2): float
+{
+    $earthRadius = 6371000; // Earth radius in meters
+    $latFrom = deg2rad($point1['lat']);
+    $lonFrom = deg2rad($point1['lng']);
+    $latTo = deg2rad($point2['lat']);
+    $lonTo = deg2rad($point2['lng']);
+
+    $latDelta = $latTo - $latFrom;
+    $lonDelta = $lonTo - $lonFrom;
+
+    $a = sin($latDelta / 2) ** 2 + cos($latFrom) * cos($latTo) * sin($lonDelta / 2) ** 2;
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+    return $earthRadius * $c;
 }
 
 
