@@ -15,32 +15,83 @@ class DriversController extends Controller
     public function createDriver(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
-
+    
         if (!$this->isAuthorized($user)) {
             return response()->json(['error' => 'Access not permitted for this user type'], 403);
         }
-
+    
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
+            'country' => ['required', 'string'],
+            'pin' => ['required', 'string'],
+            'licence_number' => ['required', 'string'],
+            'licence_issue_date' => ['required', 'date_format:d-m-Y'],
+            'licence_expiry_date' => ['required', 'date_format:d-m-Y'],
             'phone' => ['required', 'string'],
+            'guarantor_name' => ['required'],
+            'guarantor_phone' => ['required'],
             'vehicle_id' => ['required', 'numeric'],
             'vehicle_vin' => ['required', 'string', 'exists:vehicles,vin'],
+           'profile_picture' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'], // 2MB limit
+            'driving_licence' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'], // 2MB limit
+             'pin_doc' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'], // 2MB limit
+            'misc_doc' => ['sometimes', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'], 
         ]);
     
-
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
-        $data = Driver::create($this->sanitizeInput($request, ['name', 'email', 'phone', 'vehicle_vin','vehicle_id']));
-
+    
+        // Convert date formats from d-m-Y to Y-m-d
+        $licenceIssueDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->input('licence_issue_date'))->format('Y-m-d');
+        $licenceExpiryDate = \Carbon\Carbon::createFromFormat('d-m-Y', $request->input('licence_expiry_date'))->format('Y-m-d');
+    
+        $data = $request->only([
+            'name', 'email', 'phone', 'vehicle_vin', 'vehicle_id', 'pin', 'country', 'licence_number', 
+            'guarantor_name', 'guarantor_phone'
+        ]);
+        
+        // Add converted date values
+        $data['licence_issue_date'] = $licenceIssueDate;
+        $data['licence_expiry_date'] = $licenceExpiryDate;
+    
+        // Handle file uploads
+        if ($request->hasFile('profile_picture')) {
+            $data['profile_picture_path'] = $request->file('profile_picture')->storeAs(
+                'drivers/' . $request->input('name'),
+                $request->input('name') . '_profile_picture.' . $request->file('profile_picture')->getClientOriginalExtension()
+            );
+        }
+        if ($request->hasFile('driving_licence')) {
+            $data['driving_licence_path'] = $request->file('driving_licence')->storeAs(
+                'drivers/' . $request->input('name'),
+                $request->input('name') . '_driving_licence.' . $request->file('driving_licence')->getClientOriginalExtension()
+            );
+        }
+        if ($request->hasFile('pin_doc')) {
+            $data['pin_path'] = $request->file('pin_doc')->storeAs(
+                'drivers/' . $request->input('name'),
+                $request->input('name') . '_pin.' . $request->file('pin_doc')->getClientOriginalExtension()
+            );
+        }
+        if ($request->hasFile('misc_doc')) {
+            $data['miscellaneous_path'] = $request->file('misc_doc')->storeAs(
+                'drivers/' . $request->input('name'),
+                $request->input('name') . '_miscellaneous.' . $request->file('misc_doc')->getClientOriginalExtension()
+            );
+        }
+    
+        // Create the driver record
+        $driver = Driver::create($data);
+    
         return response()->json([
             'message' => 'Driver created successfully',
             'success' => true,
-            'data' => $data
+            'data' => $driver
         ], 200);
     }
+    
 
     // Edit an existing driver
     public function editDriver(Request $request)

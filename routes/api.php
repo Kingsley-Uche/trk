@@ -21,6 +21,8 @@ Route::post('user/verify/email', [UserController::class, 'confirmEmail']);
 Route::post('user/regenerate/otp', [UserController::class, 'generateOtp']);
 Route::post('user/change/password', [UserController::class, 'changePassword']);
 Route::get('user/logout',[UserController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('/driver-documents/{filename}', [DocumentController::class, 'show'])->middleware('auth:sanctum');
+
 Route::post('/initial/register', [UserController::class, 'registerAdmin']);//to be removed after admin registration
 Route::post('/track/send', [LiveTrackController::class, 'updateLocation']);
 
