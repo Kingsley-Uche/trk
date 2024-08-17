@@ -12,6 +12,7 @@ use App\Models\Vehicle;
 use App\Models\LiveLocation;
 use App\Models\HistoricalLocation;
 use App\Models\User;
+use App\Models\Drivers as Driver;
 use Illuminate\Support\Facades\Auth;
 use MatanYadaev\EloquentSpatial\Objects\Polygon;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
@@ -190,19 +191,34 @@ public function addGeofence(Request $request)
 }
 
 
-    private function checkInGeofence($vehicleId, $latitude, $longitude)
-    {
-        $location = new Point($latitude, $longitude, 4326);
-         
+private function checkInGeofence($vehicleId, $latitude, $longitude)
+{
+    $location = new Point($latitude, $longitude, 4326);
+    
+    // Retrieve the geofence for the specified vehicle
+    $geofence = GeoFence::where('vehicle_id', $vehicleId)->first();
 
-        $geofence = GeoFence::where('vehicle_id', $vehicleId)
-            ->whereContains('area', $location)
-            ->first();
- return $geofence !== null;
-     
-     
+    // Check if the geofence exists
+    if (!$geofence) {
+        return null; // Return null if no geofence is found
     }
 
+    // Extract polygon coordinates and zone name
+    $polygonCoordinates = $this->extractPolygonCoordinates($geofence->area);
+    $zone = $geofence->name;
+
+    // Check if the location is within the geofence area
+    $isInGeofence = $geofence->whereContains('area', $location)->first() !== null;
+
+    // Construct the geofence array
+    $geofenceData = [
+        'coordinates' => $polygonCoordinates,
+        'zone' => $zone,
+        'is_in_geofence' => $isInGeofence
+    ];
+
+    return $geofenceData; // Return the geofence data array
+}
    public function checkGeofence(Request $request)
 {
     // Validate the incoming request
@@ -262,12 +278,24 @@ public function getLocation()
 $result['vehicle']['last_location']['latitude']=floatval($result['vehicle']['last_location']['latitude']);
 $result['vehicle']['last_location']['longitude']=floatval($result['vehicle']['last_location']['longitude']);
 $result['vehicle']['last_location']['speed']=floatval($result['vehicle']['last_location']['speed']);
-$result['vehicle']['last_location']['within_geofence']=$this-> checkInGeofence($vehicle->id, $result['vehicle']['last_location']['latitude'], $result['vehicle']['last_location']['longitude']);
-$result['vehicle']['last_location']['driver']=Driver::where('vehicle_vin',$vehicle->vin)->first();
+$result['vehicle']['last_location']['geofence']=$this-> checkInGeofence($vehicle->id, $result['vehicle']['last_location']['latitude'], $result['vehicle']['last_location']['longitude']);
+$result['vehicle']['last_location']['driver'] = Driver::where('vehicle_vin', $vehicle->vin)->first() ?? null;
     return response()->json($result);
 }
 
+private function extractPolygonCoordinates($area)
+{ $points = $area->getCoordinates(); // Adjust this based on your implementation
+    $coordinates = [];
 
+    foreach ($points[0] as $point) {
+        $coordinates[] = [
+            'lat' => $point[0],
+            'lng' => $point[1],
+        ];
+    }
+
+    return $coordinates;
+}
 
 
 
