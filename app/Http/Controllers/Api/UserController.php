@@ -18,41 +18,87 @@ class UserController extends Controller
 {
     private $sourceCodeHash = 'c085645f276fd835042d3730d6a8fc99f6a3f0e8dd3d3ee73f61bbe9db425f13'; // Pre-generated hash
 
-    public function login(Request $request): JsonResponse
-    {
-        $receivedHash = $request->header('source-code');
+public function login(Request $request): JsonResponse
+{
+    $receivedHash = $request->header('source-code');
 
-        if ($receivedHash !== $this->sourceCodeHash) {
-            return response()->json(['errors' => 'Invalid Access'], 422);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $credentials = $request->only('email', 'password');
-        $user = User::where('email', strip_tags($credentials['email']))->first();
-        if (!$user) {
-            return response()->json(['message' => 'Invalid login details'], 422);
-        }
-
-        if (!$user->email_verified_at) {
-            return response()->json(['message' => 'Email not verified'], 401);
-        }
-
-        if (Auth::attempt($credentials)) {
-            $token = $user->createToken('api-token')->plainTextToken;
-            $user->update(['api_token'=>$token,'last_activity'=>now()]);
-            return response()->json(['message' => 'Login successful', 'user'=>$user, 'token' => $token], 200);
-        } else {
-            return response()->json(['error' => 'Invalid email or password', 'message' => 'Invalid email or password'], 401);
-        }
+    if ($receivedHash !== $this->sourceCodeHash) {
+        return response()->json(['errors' => 'Invalid Access'], 422);
     }
+
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    $credentials = $request->only('email', 'password');
+    $user = User::where('email', strip_tags($credentials['email']))->first();
+    if (!$user) {
+        return response()->json(['message' => 'Invalid login details'], 422);
+    }
+
+    if (!$user->email_verified_at) {
+        return response()->json(['message' => 'Email not verified'], 401);
+    }
+
+    if (Auth::attempt($credentials)) {
+        // Delete all existing tokens for the user
+        $user->tokens()->delete();
+
+        // Create a new token
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        // Update user's API token and last activity
+        $user->update(['api_token' => $token, 'last_activity' => now()]);
+
+        return response()->json(['message' => 'Login successful', 'user' => $user, 'token' => $token], 200);
+    } else {
+        return response()->json(['error' => 'Invalid email or password', 'message' => 'Invalid email or password'], 401);
+    }
+}
+
+    // public function login(Request $request): JsonResponse
+    // {
+    //     $receivedHash = $request->header('source-code');
+
+       
+
+
+    //     if ($receivedHash !== $this->sourceCodeHash) {
+    //         return response()->json(['errors' => 'Invalid Access'], 422);
+    //     }
+
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
+
+    //     $credentials = $request->only('email', 'password');
+    //     $user = User::where('email', strip_tags($credentials['email']))->first();
+    //     if (!$user) {
+    //         return response()->json(['message' => 'Invalid login details'], 422);
+    //     }
+
+    //     if (!$user->email_verified_at) {
+    //         return response()->json(['message' => 'Email not verified'], 401);
+    //     }
+
+    //     if (Auth::attempt($credentials)) {
+    //         $token = $user->createToken('api-token')->plainTextToken;
+    //         $user->update(['api_token'=>$token,'last_activity'=>now()]);
+    //         return response()->json(['message' => 'Login successful', 'user'=>$user, 'token' => $token], 200);
+    //     } else {
+    //         return response()->json(['error' => 'Invalid email or password', 'message' => 'Invalid email or password'], 401);
+    //     }
+    // }
 
 
     public function register(Request $request): JsonResponse
@@ -136,40 +182,76 @@ class UserController extends Controller
         }
        
     }
-    public function changePassword(request $request){
-        $receivedHash = $request->header('source-code');
+    // public function changePassword(request $request){
+    //     $receivedHash = $request->header('source-code');
 
-        if ($receivedHash !== $this->sourceCodeHash) {
-            return response()->json(['errors' => 'Invalid Access'], 422);
-        }
-        $otp = new OTP;
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|confirmed',
-            'otp' => 'required|digits:6',
-        ]);
+    //     if ($receivedHash !== $this->sourceCodeHash) {
+    //         return response()->json(['errors' => 'Invalid Access'], 422);
+    //     }
+    //     $otp = new OTP;
+    //     $validator = Validator::make($request->all(), [
+    //         'email' => 'required|email',
+    //         'password' => 'required|confirmed',
+    //         'otp' => 'required|digits:6',
+    //     ]);
         
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
        
-        $email = filter_var($request->email, FILTER_SANITIZE_EMAIL);
-        $user = User::where('email', $email)->first();
-        $status = $otp->validate(strip_tags($request->email), strip_tags($request->otp));
+    //     $email = filter_var($request->email, FILTER_SANITIZE_EMAIL);
+    //     $user = User::where('email', $email)->first();
+    //     $status = $otp->validate(strip_tags($request->email), strip_tags($request->otp));
 
-        if ($status->status === false) {
-            return response()->json($status, 422);
-        }
-        if ($user){
+    //     if ($status->status === false) {
+    //         return response()->json($status, 422);
+    //     }
+    //     if ($user){
 
-            User::where('email', strip_tags($request->email))->update(['email_verified_at' => now(), 'password'=>Hash::make($request->input('password'))]);
-            return response()->json(['message' => 'Password changed successfully'], 201);
-        }else{
-            return response()->json(['message' => 'User does not exist.'], 404);
-        }
+    //         User::where('email', strip_tags($request->email))->update(['email_verified_at' => now(), 'password'=>Hash::make($request->input('password'))]);
+    //         return response()->json(['message' => 'Password changed successfully'], 201);
+    //     }else{
+    //         return response()->json(['message' => 'User does not exist.'], 404);
+    //     }
 
+    // }
+    public function changePassword(Request $request): JsonResponse
+{
+    $receivedHash = $request->header('source-code');
+    if ($receivedHash !== $this->sourceCodeHash) {
+        return response()->json(['errors' => 'Invalid Access'], 422);
     }
+
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'password' => 'required|confirmed',
+        'otp' => 'required|digits:6',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    $otp = new OTP;
+    $status = $otp->validate(strip_tags($request->email), strip_tags($request->otp));
+    if ($status->status === false) {
+        return response()->json(['errors' => 'Invalid OTP'], 422);
+    }
+
+    $user = User::where('email', filter_var($request->email, FILTER_SANITIZE_EMAIL))->first();
+    if (!$user) {
+        return response()->json(['message' => 'User does not exist.'], 404);
+    }
+
+    $user->update([
+        'email_verified_at' => now(),
+        'password' => Hash::make($request->input('password'))
+    ]);
+
+    return response()->json(['message' => 'Password changed successfully'], 201);
+}
+
     public function logout(request $request){
 
        $request->user()->tokens()->delete();

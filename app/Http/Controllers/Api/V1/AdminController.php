@@ -16,6 +16,7 @@ class AdminController extends Controller
   public function RegisterUser(request $request){
     $user = Auth::guard('sanctum')->user();
     
+    
 
         if (!$user || !in_array($user->user_type, ['admin', 'system_admin']) || !$user->can('create user')) {
             return response()->json(['error' => 'Invalid Access'], 422);

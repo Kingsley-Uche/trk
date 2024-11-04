@@ -1,0 +1,51 @@
+[29-Sep-2024 06:37:39 UTC] PHP Warning:  require(/home/ffsdrarx/cti.maypaseducation.com/cti/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/ffsdrarx/cti.maypaseducation.com/cti/public/index.php on line 13
+[29-Sep-2024 06:37:39 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/ffsdrarx/cti.maypaseducation.com/cti/public/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/ffsdrarx/cti.maypaseducation.com/cti/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/ffsdrarx/cti.maypaseducation.com/cti/public/index.php on line 13
+[12-Oct-2024 23:02:42 Africa/Lagos] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Api\V1\LiveTrackController::haversineGreatCircleDistance() in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 352
+[12-Oct-2024 23:03:11 Africa/Lagos] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Api\V1\LiveTrackController::haversineGreatCircleDistance() in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 352
+[12-Oct-2024 23:03:33 Africa/Lagos] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Api\V1\LiveTrackController::haversineGreatCircleDistance() in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 352
+[13-Oct-2024 08:39:15 Africa/Lagos] PHP Fatal error:  Trait "Carbon\Carbon\Carbon" not found in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 29
+[13-Oct-2024 08:39:16 Africa/Lagos] PHP Fatal error:  Trait "Carbon\Carbon\Carbon" not found in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 29
+[13-Oct-2024 08:39:28 Africa/Lagos] PHP Fatal error:  Trait "Carbon\Carbon\Carbon" not found in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 29
+[13-Oct-2024 08:39:37 Africa/Lagos] PHP Fatal error:  Trait "Carbon\Carbon\Carbon" not found in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 29
+[13-Oct-2024 08:39:39 Africa/Lagos] PHP Fatal error:  Trait "Carbon\Carbon\Carbon" not found in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 29
+[13-Oct-2024 08:39:58 Africa/Lagos] PHP Fatal error:  Trait "Carbon\Carbon\Carbon" not found in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 29
+[13-Oct-2024 08:39:59 Africa/Lagos] PHP Fatal error:  Trait "Carbon\Carbon\Carbon" not found in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/LiveTrackController.php on line 29
+[19-Oct-2024 10:20:54 Africa/Lagos] Curl error: Failed to connect to 52.47.148.184 port 8082 after 1045 ms: Could not connect to server
+[19-Oct-2024 10:23:53 Africa/Lagos] Curl error: Failed to connect to 52.47.148.184 port 8082 after 1024 ms: Could not connect to server
+[19-Oct-2024 10:27:06 Africa/Lagos] Curl error: Failed to connect to 52.47.148.184 port 8082 after 1019 ms: Could not connect to server
+[19-Oct-2024 10:28:33 Africa/Lagos] Curl error: Failed to connect to 52.47.148.184 port 8082 after 1027 ms: Could not connect to server
+[26-Oct-2024 10:14:16 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 4
+[26-Oct-2024 10:15:12 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 4
+[26-Oct-2024 10:16:12 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 4
+[26-Oct-2024 10:37:03 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 10:38:03 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 10:44:10 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 1
+[26-Oct-2024 11:11:19 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 11:12:18 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 11:56:01 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 11:58:00 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 12:04:00 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 12:05:00 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 12:07:00 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 12:09:00 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 12:11:00 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 12:12:00 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 12:13:20 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[26-Oct-2024 12:14:00 Africa/Lagos] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Events/VehicleLocationUpdated.php on line 2
+[31-Oct-2024 00:26:05 Africa/Lagos] JSON decode error: Syntax error
+[31-Oct-2024 00:30:59 Africa/Lagos] JSON decode error: Syntax error
+[31-Oct-2024 00:37:06 Africa/Lagos] HTTP Error 500: 
+[31-Oct-2024 00:37:06 Africa/Lagos] JSON decode error: Syntax error
+[31-Oct-2024 00:45:03 Africa/Lagos] HTTP Error 500: 
+[31-Oct-2024 00:45:03 Africa/Lagos] JSON decode error: Syntax error
+[31-Oct-2024 00:46:06 Africa/Lagos] HTTP Error 500: 
+[31-Oct-2024 00:46:06 Africa/Lagos] JSON decode error: Syntax error
+[31-Oct-2024 22:38:02 Africa/Lagos] HTTP Error 500: 
+[31-Oct-2024 22:38:02 Africa/Lagos] JSON decode error: Syntax error
+[31-Oct-2024 22:46:29 Africa/Lagos] HTTP Error 500: 
+[31-Oct-2024 22:46:29 Africa/Lagos] JSON decode error: Syntax error
+[01-Nov-2024 17:12:40 Africa/Lagos] PHP Fatal error:  Cannot redeclare App\Http\Controllers\Api\V1\Gps::create() in /home/ffsdrarx/cti.maypaseducation.com/cti/app/Http/Controllers/Api/V1/Gps.php on line 199
+[01-Nov-2024 17:13:32 Africa/Lagos] JSON decode error: Syntax error

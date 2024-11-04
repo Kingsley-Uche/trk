@@ -20,7 +20,7 @@ class Tracker extends Model
         'events'
     ];
 
-    protected $hidden = ['id'];
+    protected $hidden = ['created_at','updated_at'];
 
     protected $casts = [
         'params' => 'array',
@@ -32,4 +32,5 @@ class Tracker extends Model
         return $this->belongsTo(Vehicle::class, 'vehicle_vin', 'vin');
     }
 }
+
 

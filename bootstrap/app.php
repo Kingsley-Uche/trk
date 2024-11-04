@@ -19,6 +19,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         $middleware->append(
             \App\Http\Middleware\CheckTokenInactivity::class
         );
+         $middleware->append(\App\Http\Middleware\JsonResponse::class);
         // You can append other middleware here if needed
     })
     ->withExceptions(function (Exceptions $exceptions) {

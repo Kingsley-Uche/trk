@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use App\Models\Track_Vehicle;
 use App\Models\User;
-
+use App\Http\Controllers\Api\V1\Gps;
 class TrackerController extends Controller
 {
     public function saveTracker(Request $request)
@@ -45,6 +45,15 @@ class TrackerController extends Controller
             'vehicle_vin.exists' => 'The provided VIN does not exist in the vehicles table.'
         ];
 
+
+
+$name = 'Chrysler';
+$uniqueId = '358657103707134';
+$phone = '+234808136458934';
+$model = 'sebring';
+$category = 'default';
+ $this->saveDevice($name, $uniqueId, $phone, $model, $category);
+ die();
         // Validate the request
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -99,5 +108,17 @@ class TrackerController extends Controller
 
         Tracker::where('id', strip_tags($request->input('tracker_id')))->delete();
         return response()->json(['message' => 'Tracker deleted successfully', 'success' => true], 200);
+    }
+    
+    private function saveDevice($name, $uniqueId, $phone, $model, $category){
+        $attributes = new \stdClass();
+        var_dump($attributes);
+        $info = Gps::deviceAdd($name, $uniqueId, $phone, $model, $category, $attributes);
+        var_dump($info);
+        die();
+    }
+    private function DestroyDevice($id){
+        Gps::deviceDelete(int($id));
+        
     }
 }

@@ -356,4 +356,38 @@ class VehicleController extends Controller
 
         return response()->json(['message' => 'Vehicle deleted successfully', 'success' => true], 200);
     }
+    public function getSingle(Request $request)
+{
+    $user = Auth::guard('sanctum')->user();
+
+    // Check if the user is authorized to perform this action
+    if (!$user || !in_array($user->user_type, ['admin', 'system_admin'])) {
+        return response()->json(['error' => 'Access not permitted for this user type'], 403);
+    }
+
+    // Validate the incoming request
+    $validator = Validator::make($request->all(), [
+        'vehicle_id' => ['required', 'numeric', 'exists:vehicles,id'],
+    ]);
+
+    // Check if validation fails
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    // Retrieve the vehicle using the validated 'vehicle_id'
+    $data = Vehicle::find($request->input('vehicle_id'));
+
+    // Check if the vehicle exists
+    if (!$data) {
+        return response()->json(['error' => 'Vehicle not found'], 404);
+    }
+
+    // Return the data as a JSON response
+    return response()->json([
+        'data' => $data,
+        'success' => true
+    ], 200);
+}
+
 }

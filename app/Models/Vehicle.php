@@ -14,7 +14,7 @@ class Vehicle extends Model
     
    public function tracker()
 {
-    return $this->hasOne(Tracker::class);
+    return $this->hasOne(Tracker::class)->select('device_id','protocol','ip','sim_no','params','port','network_protocol','vehicle_id');
 }
 
     
@@ -28,8 +28,13 @@ class Vehicle extends Model
 
 public function lastLocation()
 {
-    return $this->hasOne(LiveLocation::class, 'vehicle_id')->latestOfMany();
+    return $this->hasOne(LiveLocation::class, 'vehicle_id')
+                ->latestOfMany();
+
 }
 
-    
+ public function speedLimit()
+{
+    return $this->hasOne(SpeedModel::class, 'vehicle_vin', 'vin')->select('speed_limit', 'vehicle_vin');
+}
 }

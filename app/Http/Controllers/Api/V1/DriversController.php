@@ -185,5 +185,33 @@ class DriversController extends Controller
             'data' => $data
         ], 200);
     }
-    
+  public function getSingle(Request $request)
+{
+    // Get the authenticated user via Sanctum guard
+    $user = Auth::guard('sanctum')->user();
+
+    // Check if the user is authorized to perform this action
+    if (!$this->isAuthorized($user)) {
+        return response()->json(['error' => 'Access not permitted for this user type'], 403);
+    }
+
+    // Validate the incoming request
+    $validator = Validator::make($request->all(), [
+        'driver_id' => ['required', 'numeric', 'exists:drivers,id'],
+    ]);
+
+    // Check if validation fails
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    // Retrieve the driver using the validated 'driver_id'
+    $data = Driver::find($request->input('driver_id'));
+
+    // Return the data as a JSON response
+    return response()->json([
+        'data' => $data,
+        'success' => true
+    ], 200);
+}
 }
